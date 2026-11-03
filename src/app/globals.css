@@ -1,0 +1,286 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #eeebe4;
+  --paper-2: #e5e1d8;
+  --ink: #14130f;
+  --ink-2: #3b3933;
+  --grey: #8b877d;
+  --line: rgba(20, 19, 15, 0.12);
+  --dark: #0c0b09;
+  --dark-2: #161512;
+  --dark-3: #201e1a;
+  --bone: #e9e5db;
+  --bone-2: #b9b5aa;
+  --dline: rgba(233, 229, 219, 0.12);
+  --accent: #8d8f2a; /* Strong olive, from the brand logo */
+  --accent-hi: #b3b63c;
+  --expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --gut: clamp(16px, 4vw, 56px);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-grey: var(--grey);
+  --color-dark: var(--dark);
+  --color-dark-2: var(--dark-2);
+  --color-dark-3: var(--dark-3);
+  --color-bone: var(--bone);
+  --color-bone-2: var(--bone-2);
+  --color-accent: var(--accent);
+  --color-accent-hi: var(--accent-hi);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body {
+  font-family: var(--font-sans);
+  background: var(--paper);
+  overflow-x: clip;
+}
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.gut {
+  padding-left: var(--gut);
+  padding-right: var(--gut);
+}
+
+/* Type */
+.display {
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+}
+.lbl {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+.tab {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Line reveal */
+.ln {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+.ln > span {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 1.2s var(--expo);
+  transition-delay: calc(var(--i, 0) * 90ms + var(--d, 0ms));
+}
+.in .ln > span,
+.ln.in > span {
+  transform: translateY(0);
+}
+
+/* Generic reveal */
+.rv {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1s var(--expo), transform 1.2s var(--expo);
+  transition-delay: var(--d, 0ms);
+}
+.rv.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Pill button */
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #f4f2ea;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform 0.3s var(--ease), color 0.4s var(--expo);
+}
+.pill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: translateY(101%);
+  transition: transform 0.5s var(--expo);
+  z-index: -1;
+  border-radius: inherit;
+}
+.pill:hover::before {
+  transform: none;
+}
+.pill:active {
+  transform: scale(0.96);
+}
+.pill .sw {
+  display: inline-block;
+  height: 1.2em;
+  overflow: hidden;
+  line-height: 1.2em;
+}
+.pill .sw > span {
+  display: block;
+  transition: transform 0.5s var(--expo);
+}
+.pill:hover .sw > span {
+  transform: translateY(-100%);
+}
+.pill.ghost {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.pill.ghost:hover {
+  color: var(--paper);
+}
+.dark .pill.ghost {
+  color: var(--bone);
+  box-shadow: inset 0 0 0 1px var(--dline);
+}
+.dark .pill::before {
+  background: var(--bone);
+}
+.dark .pill:hover {
+  color: var(--dark);
+}
+
+.ulink {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--expo), color 0.3s;
+}
+.ulink:hover {
+  background-size: 100% 1px;
+}
+
+/* Chips */
+.chip {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 1px var(--dline);
+  color: var(--bone-2);
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+}
+.chip:hover {
+  color: var(--bone);
+  box-shadow: inset 0 0 0 1px rgba(233, 229, 219, 0.35);
+}
+.chip[aria-pressed="true"] {
+  background: var(--bone);
+  color: var(--dark);
+  box-shadow: none;
+}
+
+/* Grain overlay */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='.55'/></svg>");
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes kenburns {
+  from { transform: scale(1.18); }
+  to { transform: scale(1.02); }
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+@keyframes drip {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  51% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  .rv { opacity: 1; transform: none; }
+  .ln > span { transform: none; }
+}
+
+/* Cursor */
+.cursor-dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: difference;
+}
+.cursor-dot > span {
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 999px;
+  background: #e9e5db;
+  transition: transform 0.45s var(--expo);
+}
+.cursor-dot[data-hover="1"] > span {
+  transform: scale(4.4);
+}
+@media (pointer: coarse) {
+  .cursor-dot { display: none; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes giant {
+  from { opacity: 0; transform: translateY(18%) scale(0.96); filter: blur(8px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
