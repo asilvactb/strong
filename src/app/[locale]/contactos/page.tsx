@@ -35,6 +35,10 @@ export default async function Contact({ params }: { params: Promise<{ locale: Lo
             {COMPANY.address.map((a) => (
               <p key={a} className="text-[17px]">{a}</p>
             ))}
+            <p className="lbl mb-1 mt-5">{t.contact.form.coords}</p>
+            <p className="tab text-[15px] text-ink-2">
+              {COMPANY.lat}, {COMPANY.lng}
+            </p>
             <a href={COMPANY.maps} target="_blank" rel="noreferrer" className="pill ghost mt-6">
               <span className="sw">
                 <span>{t.contact.route}</span>

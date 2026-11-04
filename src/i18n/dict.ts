@@ -124,7 +124,7 @@ const pt = {
     email: "Email",
     route: "Abrir no mapa",
     note: "Chamada para a rede fixa/móvel nacional, de acordo com o tarifário do seu operador.",
-    form: { name: "Nome", email: "Email", company: "Empresa", subject: "Produto de interesse", message: "Mensagem", send: "Enviar pedido" },
+    form: { title: "Vamos falar do seu projeto?", personal: "Informações pessoais", project: "Requisitos do projeto", name: "Nome", email: "Email", phone: "Telefone", address: "Morada", product: "Qual o produto?", rooms: "Quais as divisões?", area: "Qual a área do seu projeto?", message: "Fale-nos sobre o seu projeto", send: "Enviar", required: "Campos obrigatórios", coords: "Coordenadas" },
   },
 };
 
@@ -206,7 +206,7 @@ const en: Dict = {
   contact: {
     label: "Contact", title: "Talk to us.", address: "Address", phone: "Phone", mobile: "Mobile", email: "Email", route: "Open in maps",
     note: "Calls to Portuguese landline/mobile numbers, charged according to your operator's rates.",
-    form: { name: "Name", email: "Email", company: "Company", subject: "Product of interest", message: "Message", send: "Send request" },
+    form: { title: "Shall we talk about your project?", personal: "Personal information", project: "Project requirements", name: "Name", email: "Email", phone: "Phone", address: "Address", product: "Which product?", rooms: "Which rooms?", area: "What is the area of your project?", message: "Tell us about your project", send: "Send", required: "Required fields", coords: "Coordinates" },
   },
 };
 
@@ -286,7 +286,7 @@ const es: Dict = {
   contact: {
     label: "Contacto", title: "Hable con nosotros.", address: "Dirección", phone: "Teléfono", mobile: "Móvil", email: "Email", route: "Abrir en mapa",
     note: "Llamada a red fija/móvil portuguesa, según la tarifa de su operador.",
-    form: { name: "Nombre", email: "Email", company: "Empresa", subject: "Producto de interés", message: "Mensaje", send: "Enviar solicitud" },
+    form: { title: "¿Hablamos de su proyecto?", personal: "Información personal", project: "Requisitos del proyecto", name: "Nombre", email: "Email", phone: "Teléfono", address: "Dirección", product: "¿Qué producto?", rooms: "¿Qué estancias?", area: "¿Cuál es el área de su proyecto?", message: "Háblenos de su proyecto", send: "Enviar", required: "Campos obligatorios", coords: "Coordenadas" },
   },
 };
 
