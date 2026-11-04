@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { ShowItem } from "./ShowcaseCanvas";
@@ -9,32 +10,58 @@ const ShowcaseCanvas = dynamic(() => import("./ShowcaseCanvas"), { ssr: false })
 
 export type ShowcaseEntry = ShowItem & {
   key: string;
-  name: string; // giant word
+  name: string;
   tag: string; // left tag (e.g. line or category)
   title: string; // full product name
   meta: { k: string; v: string }[];
   href: string;
+  shot?: string; // photographic studio shot; falls back to the 3D plank when missing
 };
 
-function lum(hex: string) {
-  const n = parseInt(hex.slice(1), 16);
-  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
-  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-}
-function mix(hex: string, to: number, k: number) {
-  const n = parseInt(hex.slice(1), 16);
-  const c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((x) => Math.round(x + (to - x) * k));
-  return `rgb(${c.join(",")})`;
-}
+const BG = "#f1efea";
+const INK = "#14130f";
+// feather only the outer few percent so the shot melts into the studio paper
+const EDGE =
+  "linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)";
 
-/** Pinned, scroll-driven product carousel: one product at a time, tossed in and out. */
+/** Enter from below spinning, settle, get tossed up and out — driven by a float index. */
+function pose(t: number) {
+  if (t < -0.5 || t > 1.5) return null;
+  let y = 0, r = 0, s = 1, o = 1;
+  if (t < 0.1) {
+    const k = smooth((t + 0.5) / 0.6);
+    y = (1 - k) * 85;
+    r = (1 - k) * 28;
+    s = 0.82 + 0.18 * k;
+    o = Math.min(1, k * 2);
+  } else if (t > 0.75) {
+    const k = smooth((t - 0.75) / 0.75);
+    y = -k * 95;
+    r = -k * 34;
+    s = 1 - 0.18 * k;
+    o = 1 - Math.max(0, k - 0.6) * 2.5;
+  } else {
+    const k = (t - 0.1) / 0.65;
+    y = (0.5 - k) * 3;
+    r = (k - 0.5) * -3;
+  }
+  return { y, r, s, o };
+}
+const smooth = (x: number) => {
+  const c = Math.min(1, Math.max(0, x));
+  return c * c * (3 - 2 * c);
+};
+
+/** Pinned, scroll-driven product carousel on a white studio backdrop. */
 export default function Showcase({ items, label, cta, index = "03" }: { items: ShowcaseEntry[]; label: string; cta: string; index?: string }) {
   const sec = useRef<HTMLElement>(null);
   const progress = useRef(0);
-  const word = useRef<HTMLDivElement>(null);
+  const apply = useRef<() => void>(() => {});
+  const layers = useRef<(HTMLDivElement | null)[]>([]);
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
   const [mob, setMob] = useState(1);
+  const photographic = items.every((i) => i.shot);
 
   useEffect(() => {
     setMob(window.innerWidth < 768 ? 2.3 : 1.3);
@@ -46,20 +73,26 @@ export default function Showcase({ items, label, cta, index = "03" }: { items: S
       const r = el.getBoundingClientRect();
       const span = r.height - window.innerHeight;
       const p = Math.min(1, Math.max(0, -r.top / span));
-      // float index, with a small lead-in so item 0 is already in place when pinned
       const f = Math.min(items.length - 0.26, 0.2 + p * (items.length - 0.46));
       progress.current = f;
-      const a = Math.min(items.length - 1, Math.max(0, Math.floor(f + 0.12)));
-      setActive(a);
-      if (word.current) {
-        const local = f - Math.floor(f);
-        word.current.style.transform = `translate3d(${(0.5 - local) * 18}vw,0,0)`;
-      }
+      setActive(Math.min(items.length - 1, Math.max(0, Math.floor(f + 0.12))));
+      layers.current.forEach((l, i) => {
+        if (!l) return;
+        const ps = pose(f - i);
+        if (!ps) {
+          l.style.visibility = "hidden";
+          return;
+        }
+        l.style.visibility = "visible";
+        l.style.opacity = String(ps.o);
+        l.style.transform = `translate3d(0,${ps.y}vh,0) rotate(${ps.r}deg) scale(${ps.s})`;
+      });
     };
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(update);
     };
+    apply.current = update;
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -70,49 +103,62 @@ export default function Showcase({ items, label, cta, index = "03" }: { items: S
     };
   }, [items.length]);
 
+  // layers mounted after an index change need their pose applied straight away
+  useEffect(() => {
+    apply.current();
+  }, [active]);
+
   const it = items[active];
-  const dark = lum(it.tone) < 0.58;
-  const ink = dark ? "#f3efe6" : "#14130f";
-  const bg = mix(it.tone, dark ? 0 : 255, dark ? 0.08 : 0.25);
-  const giant = mix(it.tone, 255, dark ? 0.32 : 0.45);
 
   return (
-    <section
-      ref={sec}
-      className="relative"
-      style={{ height: `${items.length * 85 + 40}vh` }}
-      data-theme={dark ? "dark" : "light"}
-    >
-      <div className="sticky top-0 h-[100svh] overflow-hidden transition-colors duration-700" style={{ background: bg, color: ink, transitionTimingFunction: "var(--ease)" }}>
-        {/* giant word */}
-        <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 select-none">
-          <div ref={word} className="will-change-transform">
-            <p
-              key={it.key}
-              className="whitespace-nowrap text-center font-medium uppercase leading-[0.8] tracking-[-0.06em] transition-colors duration-700"
-              style={{ fontSize: `clamp(120px, ${Math.min(30, 210 / Math.max(4, it.name.length))}vw, 520px)`, color: giant, animation: "giant .9s var(--expo) both" }}
-            >
-              {it.name}
-            </p>
-          </div>
-        </div>
+    <section ref={sec} className="relative" style={{ height: `${items.length * 85 + 40}vh` }} data-theme="light">
+      <div className="sticky top-0 h-[100svh] overflow-hidden" style={{ background: BG, color: INK }}>
 
-        {/* 3D */}
-        <div className="absolute inset-0">{visible && <ShowcaseCanvas items={items} progressRef={progress} active={active} dist={mob} />}</div>
+        {/* product */}
+        {photographic ? (
+          <div className="absolute inset-x-0 top-[10%] bottom-[22%] md:top-[8%] md:bottom-[18%]">
+            {items.map((x, i) =>
+              Math.abs(i - active) > 2 ? null : (
+                <div
+                  key={x.key}
+                  ref={(o) => void (layers.current[i] = o)}
+                  className="absolute inset-0 will-change-transform"
+                  style={{ visibility: "hidden" }}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div
+                      className="relative aspect-[16/9] w-[min(100%,calc(70svh*16/9))]"
+                      style={{
+                        maskImage: EDGE,
+                        WebkitMaskImage: EDGE,
+                        maskComposite: "intersect",
+                        WebkitMaskComposite: "source-in",
+                      }}
+                    >
+                      <Image src={x.shot!} alt={x.title} fill sizes="(min-width:768px) 125svh, 100vw" className="object-cover" priority={i < 2} />
+                    </div>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        ) : (
+          <div className="absolute inset-0">{visible && <ShowcaseCanvas items={items} progressRef={progress} active={active} dist={mob} />}</div>
+        )}
 
         {/* top row */}
         <div className="gut absolute inset-x-0 top-[96px] flex justify-between">
-          <p className="lbl" style={{ color: ink, opacity: 0.7 }}>
+          <p className="lbl" style={{ color: INK, opacity: 0.7 }}>
             {index} — {label}
           </p>
-          <p className="lbl tab" style={{ color: ink, opacity: 0.7 }}>
+          <p className="lbl tab" style={{ color: INK, opacity: 0.7 }}>
             {String(active + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
           </p>
         </div>
 
         {/* left tag */}
-        <div key={"t" + it.key} className="absolute left-[var(--gut)] top-[38%] hidden md:block" style={{ animation: "rise .8s var(--expo) both" }}>
-          <span className="inline-block -rotate-6 rounded-[4px] px-4 py-2 font-mono text-[12px] uppercase tracking-[0.16em]" style={{ background: ink, color: bg }}>
+        <div key={"t" + it.key} className="absolute left-[var(--gut)] top-[30%] hidden md:block" style={{ animation: "rise .8s var(--expo) both" }}>
+          <span className="inline-block -rotate-6 rounded-[4px] px-4 py-2 font-mono text-[12px] uppercase tracking-[0.16em]" style={{ background: INK, color: BG }}>
             {it.tag}
           </span>
         </div>
@@ -120,8 +166,8 @@ export default function Showcase({ items, label, cta, index = "03" }: { items: S
         {/* right badge */}
         <Link
           href={it.href}
-          className="group absolute right-[var(--gut)] top-[34%] hidden h-[112px] w-[112px] items-center justify-center rounded-full border md:flex"
-          style={{ borderColor: ink, color: ink }}
+          className="group absolute right-[var(--gut)] top-[28%] hidden h-[112px] w-[112px] items-center justify-center rounded-full border md:flex"
+          style={{ borderColor: INK, color: INK }}
           data-cursor
         >
           <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full" style={{ animation: "spin 14s linear infinite" }} aria-hidden>
@@ -137,10 +183,10 @@ export default function Showcase({ items, label, cta, index = "03" }: { items: S
 
         {/* bottom spec */}
         <div className="gut absolute inset-x-0 bottom-0 pb-7 md:pb-9">
-          <div key={"b" + it.key} className="flex flex-col gap-5 border-t pt-5 md:flex-row md:items-end md:justify-between" style={{ borderColor: dark ? "rgba(243,239,230,.2)" : "rgba(20,19,15,.15)", animation: "rise .8s var(--expo) both" }}>
+          <div key={"b" + it.key} className="flex flex-col gap-5 border-t pt-5 md:flex-row md:items-end md:justify-between" style={{ borderColor: "rgba(20,19,15,.15)", animation: "rise .8s var(--expo) both" }}>
             <div>
               <p className="text-[clamp(24px,2.6vw,42px)] font-medium leading-none tracking-[-0.04em]">{it.title}</p>
-              <Link href={it.href} className="lbl mt-3 inline-block md:hidden" style={{ color: ink }}>
+              <Link href={it.href} className="lbl mt-3 inline-block md:hidden" style={{ color: INK }}>
                 {cta} →
               </Link>
             </div>
@@ -157,7 +203,7 @@ export default function Showcase({ items, label, cta, index = "03" }: { items: S
           </div>
           <div className="mt-5 flex gap-1">
             {items.map((x, i) => (
-              <span key={x.key} className="h-[2px] flex-1 transition-opacity duration-500" style={{ background: ink, opacity: i === active ? 0.9 : 0.18 }} />
+              <span key={x.key} className="h-[2px] flex-1 transition-opacity duration-500" style={{ background: INK, opacity: i === active ? 0.9 : 0.18 }} />
             ))}
           </div>
         </div>

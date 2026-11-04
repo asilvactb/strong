@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import type { Category, Locale, SpeciesId } from "@/data/catalog";
 import { CATEGORIES, SPECIES, variantLabel } from "@/data/catalog";
 import { getDict } from "@/i18n/dict";
@@ -62,6 +64,13 @@ export function categoryShowcase(cat: Category, locale: Locale): ShowcaseEntry[]
       width: Math.max(...v.widths),
       thickness: Math.max(...v.thicknesses),
       build: cat.build,
+      shot: shotFor(cat.id, v.slug),
     };
   });
+}
+
+/** Photographic studio shot for a reference, if one has been produced. */
+function shotFor(cat: string, slug: string) {
+  const rel = `/img/shots/${cat}/${slug}.jpg`;
+  return fs.existsSync(path.join(process.cwd(), "public", rel)) ? rel : undefined;
 }
