@@ -130,7 +130,7 @@ export default function Configurator({ cat, locale, photos }: { cat: Category; l
                 ))}
               </div>
               <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-bone-2">
-                {s.latin} · {s.range[locale]}
+                {s.latin}
               </p>
             </Group>
           )}

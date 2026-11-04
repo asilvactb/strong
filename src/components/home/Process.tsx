@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-const IMGS = ["/img/forest.jpg", "/textures/carvalho.jpg", "/img/factory.jpg", "/img/section.jpg", "/img/hero-deck.jpg"];
+const IMGS = ["/img/forest.jpg", "/textures/carvalho.jpg", "/img/factory-2.jpg", "/img/section.jpg", "/img/hero-deck.jpg"];
 
 /** Sticky horizontal scroll through the process steps. */
 export default function Process({ label, title, steps }: { label: string; title: string; steps: { t: string; d: string }[] }) {

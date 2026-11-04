@@ -256,7 +256,6 @@ body {
   z-index: 100;
   pointer-events: none;
   opacity: 0;
-  mix-blend-mode: difference;
 }
 .cursor-dot > span {
   display: block;
@@ -264,11 +263,13 @@ body {
   height: 10px;
   margin: -5px 0 0 -5px;
   border-radius: 999px;
-  background: #e9e5db;
-  transition: transform 0.45s var(--expo);
+  background: var(--accent);
+  transition: transform 0.45s var(--expo), background 0.3s, box-shadow 0.3s;
 }
 .cursor-dot[data-hover="1"] > span {
-  transform: scale(4.4);
+  transform: scale(3.6);
+  background: transparent;
+  box-shadow: inset 0 0 0 0.6px var(--accent);
 }
 @media (pointer: coarse) {
   .cursor-dot { display: none; }

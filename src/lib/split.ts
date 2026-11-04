@@ -7,7 +7,10 @@ export function splitTitle(s: string): string[] {
   let best = 1, diff = Infinity;
   for (let i = 1; i < w.length; i++) {
     const d = Math.abs(w.slice(0, i).join(" ").length - w.slice(i).join(" ").length);
-    if (d < diff) (diff = d), (best = i);
+    if (d < diff) {
+      diff = d;
+      best = i;
+    }
   }
   return [w.slice(0, best).join(" "), w.slice(best).join(" ")];
 }

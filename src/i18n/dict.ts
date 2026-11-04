@@ -25,12 +25,12 @@ const pt = {
     title: "Por dentro de uma tábua multicamadas.",
     steps: [
       { t: "Camada nobre", d: "Madeira maciça da espécie escolhida. É a superfície que se vê, se toca e envelhece com o espaço." },
-      { t: "Base estrutural", d: "Contraplacado de camadas cruzadas. Dá estabilidade dimensional e resistência à tábua." },
-      { t: "Macho-fêmea", d: "Perfil de encaixe maquinado com precisão, para uma instalação fácil e juntas perfeitas." },
+      { t: "Base estrutural", d: "Camada interior em contraplacado, que dá resistência à tábua." },
+      { t: "Macho-fêmea", d: "Encaixe macho-fêmea, para uma instalação fácil." },
       { t: "Acabamento", d: "Cru, envernizado, oleado ou com velatura. A mesma madeira, quatro carácteres diferentes." },
     ],
   },
-  species: { label: "Espécies", title: "Dezasseis madeiras. Cada uma com a sua assinatura.", hint: "Passe por cima para ver o veio", origin: "Origem natural" },
+  species: { label: "Espécies", title: "Dezasseis madeiras. Cada uma com a sua assinatura.", hint: "Passe por cima para ver o veio" },
   numbers: {
     label: "Em números",
     items: [
@@ -48,7 +48,7 @@ const pt = {
       { t: "Seleção", d: "Seleção rigorosa da matéria-prima, espécie a espécie, tábua a tábua." },
       { t: "Transformação", d: "Tecnologia avançada e uma equipa especializada e motivada em cada setor da produção." },
       { t: "Acabamento", d: "Cru, envernizado, oleado ou velatura, de acordo com o produto e o projeto." },
-      { t: "Entrega", d: "Pavimentos, decks, triplex, rodapés e acessórios prontos para a obra, em Portugal e no estrangeiro." },
+      { t: "Entrega", d: "Pavimentos, decks, triplex, rodapés e acessórios prontos para a obra." },
     ],
   },
   responsibility: {
@@ -101,7 +101,7 @@ const pt = {
     title: "Notícias e investigação.",
     domotex: "A Strong Export esteve presente na Domotex, a principal feira mundial de pavimentos, “The World of Flooring”, em Hannover. Obrigado a todos os que visitaram o nosso stand.",
     research: "Investigação",
-    researchIntro: "Em parceria com a Universidade do Porto, a Strong participa em investigação aplicada sobre a valorização de serradura e a libertação controlada de aromas em pavimentos de contraplacado.",
+    researchIntro: "Investigação aplicada sobre a valorização de serradura e a libertação controlada de aromas em pavimentos de contraplacado.",
   },
   pt2030: {
     label: "Portugal 2030",
@@ -146,12 +146,12 @@ const en: Dict = {
     title: "Inside an engineered board.",
     steps: [
       { t: "Noble layer", d: "Solid wood of the chosen species. The surface you see, touch and that ages with the space." },
-      { t: "Structural base", d: "Cross-laminated plywood. Gives the board dimensional stability and strength." },
-      { t: "Tongue & groove", d: "A precision-machined joint for easy installation and perfect seams." },
+      { t: "Structural base", d: "Inner plywood layer that gives the board its strength." },
+      { t: "Tongue & groove", d: "Tongue and groove joint for easy installation." },
       { t: "Finish", d: "Raw, varnished, oiled or tinted glaze. One wood, four characters." },
     ],
   },
-  species: { label: "Species", title: "Sixteen woods. Each with its own signature.", hint: "Hover to read the grain", origin: "Natural range" },
+  species: { label: "Species", title: "Sixteen woods. Each with its own signature.", hint: "Hover to read the grain" },
   numbers: { label: "In numbers", items: [{ v: 2011, l: "Founded" }, { v: 16, l: "Wood species" }, { v: 68, l: "Catalogue references" }, { v: 6, l: "Product lines" }] },
   process: {
     label: "Process",
@@ -161,7 +161,7 @@ const en: Dict = {
       { t: "Selection", d: "Rigorous selection of raw material, species by species, board by board." },
       { t: "Processing", d: "Advanced technology and a specialised, motivated team in every production sector." },
       { t: "Finishing", d: "Raw, varnished, oiled or tinted glaze, depending on product and project." },
-      { t: "Delivery", d: "Floors, decking, triplex, skirting and accessories ready for site, in Portugal and abroad." },
+      { t: "Delivery", d: "Floors, decking, triplex, skirting and accessories ready for site." },
     ],
   },
   responsibility: {
@@ -194,7 +194,7 @@ const en: Dict = {
     title: "News and research.",
     domotex: "Strong Export exhibited at Domotex, the world's leading flooring fair, “The World of Flooring”, in Hannover. Thank you to everyone who visited our stand.",
     research: "Research",
-    researchIntro: "In partnership with the University of Porto, Strong takes part in applied research on sawdust valorisation and the slow release of aromas in plywood floors.",
+    researchIntro: "Applied research on sawdust valorisation and the slow release of aromas in plywood floors.",
   },
   pt2030: {
     label: "Portugal 2030",
@@ -226,12 +226,12 @@ const es: Dict = {
     title: "Por dentro de una tabla multicapa.",
     steps: [
       { t: "Capa noble", d: "Madera maciza de la especie elegida. La superficie que se ve, se toca y envejece con el espacio." },
-      { t: "Base estructural", d: "Contrachapado de capas cruzadas. Aporta estabilidad dimensional y resistencia." },
-      { t: "Machihembrado", d: "Perfil de unión mecanizado con precisión, para una instalación fácil y juntas perfectas." },
+      { t: "Base estructural", d: "Capa interior de contrachapado, que aporta resistencia a la tabla." },
+      { t: "Machihembrado", d: "Unión machihembrada, para una instalación fácil." },
       { t: "Acabado", d: "Crudo, barnizado, aceitado o veladura. La misma madera, cuatro caracteres." },
     ],
   },
-  species: { label: "Especies", title: "Dieciséis maderas. Cada una con su firma.", hint: "Pase el cursor para ver la veta", origin: "Origen natural" },
+  species: { label: "Especies", title: "Dieciséis maderas. Cada una con su firma.", hint: "Pase el cursor para ver la veta" },
   numbers: { label: "En cifras", items: [{ v: 2011, l: "Año de fundación" }, { v: 16, l: "Especies de madera" }, { v: 68, l: "Referencias en catálogo" }, { v: 6, l: "Líneas de producto" }] },
   process: {
     label: "Proceso",
@@ -241,7 +241,7 @@ const es: Dict = {
       { t: "Selección", d: "Selección rigurosa de la materia prima, especie a especie, tabla a tabla." },
       { t: "Transformación", d: "Tecnología avanzada y un equipo especializado y motivado en cada sector de la producción." },
       { t: "Acabado", d: "Crudo, barnizado, aceitado o veladura, según el producto y el proyecto." },
-      { t: "Entrega", d: "Pavimentos, decks, triplex, rodapiés y accesorios listos para obra, en Portugal y en el extranjero." },
+      { t: "Entrega", d: "Pavimentos, decks, triplex, rodapiés y accesorios listos para obra." },
     ],
   },
   responsibility: {
@@ -274,7 +274,7 @@ const es: Dict = {
     title: "Noticias e investigación.",
     domotex: "Strong Export estuvo presente en Domotex, la principal feria mundial de pavimentos, “The World of Flooring”, en Hannover. Gracias a todos los que visitaron nuestro stand.",
     research: "Investigación",
-    researchIntro: "En colaboración con la Universidad de Oporto, Strong participa en investigación aplicada sobre la valorización del serrín y la liberación controlada de aromas en suelos de contrachapado.",
+    researchIntro: "Investigación aplicada sobre la valorización del serrín y la liberación controlada de aromas en suelos de contrachapado.",
   },
   pt2030: {
     label: "Portugal 2030",

@@ -28,7 +28,6 @@ export type Species = {
   name: string; // commercial PT name, used across all locales
   common: L10n;
   latin: string;
-  range: L10n;
   tone: string; // fallback colour when texture is missing
   texture: string;
 };
@@ -39,7 +38,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Carvalho",
     common: { pt: "Carvalho", en: "Oak", es: "Roble" },
     latin: "Quercus spp.",
-    range: { pt: "Europa · América do Norte", en: "Europe · North America", es: "Europa · Norteamérica" },
     tone: "#BC8248",
     texture: "/textures/carvalho.jpg",
   },
@@ -48,7 +46,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Carvalho Homogéneo",
     common: { pt: "Carvalho seleção homogénea", en: "Oak, homogeneous selection", es: "Roble, selección homogénea" },
     latin: "Quercus spp.",
-    range: { pt: "Europa · América do Norte", en: "Europe · North America", es: "Europa · Norteamérica" },
     tone: "#BD8752",
     texture: "/textures/carvalho-homogeneo.jpg",
   },
@@ -57,7 +54,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Nogueira",
     common: { pt: "Nogueira", en: "Walnut", es: "Nogal" },
     latin: "Juglans spp.",
-    range: { pt: "América do Norte", en: "North America", es: "Norteamérica" },
     tone: "#84674A",
     texture: "/textures/nogueira.jpg",
   },
@@ -66,7 +62,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Cumaru",
     common: { pt: "Cumaru", en: "Cumaru · Brazilian teak", es: "Cumarú" },
     latin: "Dipteryx odorata",
-    range: { pt: "América do Sul", en: "South America", es: "Sudamérica" },
     tone: "#6A4118",
     texture: "/textures/cumaru.jpg",
   },
@@ -75,7 +70,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Jatobá",
     common: { pt: "Jatobá", en: "Jatoba · Brazilian cherry", es: "Jatobá" },
     latin: "Hymenaea courbaril",
-    range: { pt: "América Central e do Sul", en: "Central & South America", es: "Centro y Sudamérica" },
     tone: "#7D4E1E",
     texture: "/textures/jatoba.jpg",
   },
@@ -84,7 +78,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Sucupira",
     common: { pt: "Sucupira", en: "Sucupira", es: "Sucupira" },
     latin: "Bowdichia spp.",
-    range: { pt: "América do Sul", en: "South America", es: "Sudamérica" },
     tone: "#613E16",
     texture: "/textures/sucupira.jpg",
   },
@@ -93,7 +86,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Hard Maple",
     common: { pt: "Ácer duro", en: "Hard maple", es: "Arce duro" },
     latin: "Acer saccharum",
-    range: { pt: "América do Norte", en: "North America", es: "Norteamérica" },
     tone: "#BAA48A",
     texture: "/textures/hard-maple.jpg",
   },
@@ -102,7 +94,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Freixo Americano",
     common: { pt: "Freixo americano", en: "American ash", es: "Fresno americano" },
     latin: "Fraxinus americana",
-    range: { pt: "América do Norte", en: "North America", es: "Norteamérica" },
     tone: "#BFA889",
     texture: "/textures/freixo.jpg",
   },
@@ -111,7 +102,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Garapa",
     common: { pt: "Garapa", en: "Garapa", es: "Garapa" },
     latin: "Apuleia leiocarpa",
-    range: { pt: "América do Sul", en: "South America", es: "Sudamérica" },
     tone: "#A2732B",
     texture: "/textures/garapa.jpg",
   },
@@ -120,7 +110,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Afizélia",
     common: { pt: "Afizélia", en: "Afzelia · Doussié", es: "Afzelia · Doussié" },
     latin: "Afzelia spp.",
-    range: { pt: "África", en: "Africa", es: "África" },
     tone: "#865A24",
     texture: "/textures/afizelia.jpg",
   },
@@ -129,7 +118,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Kambala Amarela",
     common: { pt: "Kambala amarela · Iroko", en: "Iroko", es: "Iroko" },
     latin: "Milicia excelsa",
-    range: { pt: "África Ocidental", en: "West Africa", es: "África Occidental" },
     tone: "#B77940",
     texture: "/textures/kambala.jpg",
   },
@@ -138,7 +126,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Pinho Americano",
     common: { pt: "Pinho americano", en: "Southern yellow pine", es: "Pino amarillo" },
     latin: "Pinus spp.",
-    range: { pt: "América do Norte", en: "North America", es: "Norteamérica" },
     tone: "#A28449",
     texture: "/textures/pinho-americano.jpg",
   },
@@ -147,7 +134,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Riga",
     common: { pt: "Pinho de Riga", en: "Riga pine · Scots pine", es: "Pino de Riga" },
     latin: "Pinus sylvestris",
-    range: { pt: "Norte da Europa", en: "Northern Europe", es: "Norte de Europa" },
     tone: "#9C7D41",
     texture: "/textures/riga.jpg",
   },
@@ -156,7 +142,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Tauari",
     common: { pt: "Tauari", en: "Tauari", es: "Tauari" },
     latin: "Couratari spp.",
-    range: { pt: "América do Sul", en: "South America", es: "Sudamérica" },
     tone: "#A48F69",
     texture: "/textures/tauari.jpg",
   },
@@ -165,7 +150,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Ipê",
     common: { pt: "Ipê", en: "Ipe", es: "Ipé" },
     latin: "Handroanthus spp.",
-    range: { pt: "América Central e do Sul", en: "Central & South America", es: "Centro y Sudamérica" },
     tone: "#523B25",
     texture: "/textures/ipe.jpg",
   },
@@ -174,7 +158,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Massaranduba",
     common: { pt: "Maçaranduba", en: "Massaranduba", es: "Masaranduba" },
     latin: "Manilkara spp.",
-    range: { pt: "América do Sul", en: "South America", es: "Sudamérica" },
     tone: "#987164",
     texture: "/textures/massaranduba.jpg",
   },
@@ -183,7 +166,6 @@ export const SPECIES: Record<SpeciesId, Species> = {
     name: "Casquinha Vermelha",
     common: { pt: "Casquinha vermelha termotratada", en: "Thermo-treated red deal", es: "Pino rojo termotratado" },
     latin: "Pinus sylvestris",
-    range: { pt: "Norte da Europa", en: "Northern Europe", es: "Norte de Europa" },
     tone: "#846E5B",
     texture: "/textures/casquinha.jpg",
   },
@@ -374,9 +356,9 @@ export const CATEGORIES: Category[] = [
     name: T("Rodapé", "Skirting Boards", "Rodapié"),
     short: T("Rodapé", "Skirting", "Rodapié"),
     lead: T(
-      "O remate que fecha o espaço. Folheado e envernizado em comprimentos standard, ou maciço cru produzido por encomenda na espécie do seu pavimento.",
-      "The finishing line of every room. Veneered and varnished in standard lengths, or solid raw made to order in the species of your floor.",
-      "El remate que cierra el espacio. Chapado y barnizado en largos estándar, o macizo crudo fabricado por encargo en la especie de su pavimento."
+      "O remate que fecha o espaço. Folheado e envernizado em comprimentos standard, ou maciço cru produzido por encomenda em dez espécies.",
+      "The finishing line of every room. Veneered and varnished in standard lengths, or solid raw made to order in ten species.",
+      "El remate que cierra el espacio. Chapado y barnizado en largos estándar, o macizo crudo fabricado por encargo en diez especies."
     ),
     construction: [
       T("Folheado sobre MDF ou contraplacado/pinho finger", "Veneer over MDF or plywood/finger-jointed pine", "Chapa sobre MDF o contrachapado/pino finger"),
@@ -410,9 +392,9 @@ export const CATEGORIES: Category[] = [
     name: T("Acessórios", "Accessories", "Accesorios"),
     short: T("Acessórios", "Accessories", "Accesorios"),
     lead: T(
-      "Tudo o que fica por baixo e faz a diferença: bases de espuma e cortiça para isolamento e conforto do pavimento.",
-      "Everything underneath that makes the difference: foam and cork underlays for insulation and floor comfort.",
-      "Todo lo que queda debajo y marca la diferencia: bases de espuma y corcho para aislamiento y confort del pavimento."
+      "Tudo o que fica por baixo e faz a diferença: bases de espuma e de cortiça para colocar sob o pavimento.",
+      "Everything underneath that makes the difference: foam and cork underlays to lay beneath the floor.",
+      "Todo lo que queda debajo y marca la diferencia: bases de espuma y de corcho para colocar bajo el pavimento."
     ),
     construction: [
       T("Bases de espuma 2 mm", "2 mm foam underlays", "Bases de espuma 2 mm"),

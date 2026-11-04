@@ -2,34 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { Locale } from "@/data/catalog";
 import { CATEGORIES, COVERS } from "@/data/catalog";
 import { getDict } from "@/i18n/dict";
 import Lines from "../Lines";
 
-
+/** Index of product lines. On hover a row opens a full-width image band beneath it. */
 export default function CollectionIndex({ locale }: { locale: Locale }) {
   const t = getDict(locale);
   const [hover, setHover] = useState<number | null>(null);
-  const prev = useRef<HTMLDivElement>(null);
-  const pos = useRef({ x: 0, y: 0, cx: 0, cy: 0 });
-
-  useEffect(() => {
-    let raf = 0;
-    const tick = () => {
-      const p = pos.current;
-      p.cx += (p.x - p.cx) * 0.12;
-      p.cy += (p.y - p.cy) * 0.12;
-      if (prev.current) prev.current.style.transform = `translate3d(${p.cx}px,${p.cy}px,0) translate(-50%,-50%) rotate(${(p.x - p.cx) * 0.03}deg)`;
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
 
   return (
-    <section className="relative bg-paper pb-[22vh]" data-theme="light" onPointerMove={(e) => ((pos.current.x = e.clientX), (pos.current.y = e.clientY))}>
+    <section className="relative bg-paper pb-[22vh]" data-theme="light">
       <div className="gut mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <div>
           <p className="lbl mb-6 rv">01 — {t.collection.label}</p>
@@ -44,58 +29,76 @@ export default function CollectionIndex({ locale }: { locale: Locale }) {
         </Link>
       </div>
 
-      <ul className="gut" onPointerLeave={() => setHover(null)}>
-        {CATEGORIES.map((c, i) => {
-          const species = new Set(c.variants.map((v) => v.species)).size;
-          return (
-            <li key={c.id} className="rv border-t border-[var(--line)] last:border-b" style={{ ["--d" as string]: `${i * 60}ms` }}>
-              <Link
-                href={`/${locale}/produtos/${c.id}`}
-                onPointerEnter={() => setHover(i)}
-                className="group grid grid-cols-12 items-center gap-4 py-7 transition-[opacity,padding] duration-500 md:py-9"
-                style={{ opacity: hover === null || hover === i ? 1 : 0.28 }}
-                data-cursor="ver"
-              >
-                <span className="lbl col-span-2 md:col-span-1">{c.index}</span>
-                <span className="col-span-10 text-[clamp(30px,4.4vw,72px)] font-medium leading-none tracking-[-0.045em] transition-transform duration-700 group-hover:translate-x-3 md:col-span-6" style={{ transitionTimingFunction: "var(--expo)" }}>
-                  {c.name[locale]}
-                </span>
-                <span className="lbl col-span-5 col-start-3 md:col-span-2 md:col-start-auto">
-                  {c.build === "underlay" ? t.product.underlay : `${species} ${t.collection.species}`}
-                </span>
-                <span className="lbl col-span-3 md:col-span-2">
-                  {c.variants.length} {t.collection.variants}
-                </span>
-                <span className="col-span-2 flex justify-end md:col-span-1">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line)] transition-all duration-500 group-hover:-rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-paper">
-                    →
+      <div className="gut grid gap-10 md:grid-cols-12">
+        <ul className="md:col-span-8" onPointerLeave={() => setHover(null)}>
+          {CATEGORIES.map((c, i) => {
+            const species = new Set(c.variants.map((v) => v.species)).size;
+            return (
+              <li key={c.id} className="rv border-t border-[var(--line)] last:border-b" style={{ ["--d" as string]: `${i * 60}ms` }}>
+                <Link href={`/${locale}/produtos/${c.id}`} onPointerEnter={() => setHover(i)} onFocus={() => setHover(i)} className="group block">
+                  <span className="grid grid-cols-12 items-center gap-4 py-7 md:py-8">
+                    <span className="lbl col-span-2 md:col-span-1">{c.index}</span>
+                    <span
+                      className="col-span-8 text-[clamp(30px,4vw,64px)] font-medium leading-none tracking-[-0.045em] transition-[color,transform] duration-500 md:col-span-7"
+                      style={{ color: hover === null || hover === i ? "var(--ink)" : "rgba(20,19,15,.28)", transform: hover === i ? "translateX(12px)" : "none", transitionTimingFunction: "var(--expo)" }}
+                    >
+                      {c.name[locale]}
+                    </span>
+                    <span className="lbl col-span-3 hidden leading-relaxed md:block">
+                      {c.build === "underlay" ? t.product.underlay : `${species} ${t.collection.species}`}
+                      <br />
+                      {c.variants.length} {t.collection.variants}
+                    </span>
+                    <span className="col-span-2 flex justify-end md:col-span-1">
+                      <span
+                        className={`flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-500 ${
+                          hover === i ? "-rotate-45 border-accent bg-accent text-paper" : "border-[var(--line)]"
+                        }`}
+                      >
+                        →
+                      </span>
+                    </span>
                   </span>
-                </span>
-                <span className="relative col-span-12 mt-2 block aspect-[16/9] overflow-hidden rounded-lg md:hidden">
-                  <Image src={COVERS[c.id]} alt="" fill sizes="100vw" className="object-cover" />
-                </span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+                  <span className="relative mb-7 block aspect-[16/9] overflow-hidden rounded-lg md:hidden">
+                    <Image src={COVERS[c.id]} alt="" fill sizes="100vw" className="object-cover" />
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
-      <div
-        ref={prev}
-        className="pointer-events-none fixed left-0 top-0 z-30 hidden h-[340px] w-[260px] overflow-hidden rounded-xl transition-[opacity,scale] duration-500 md:block"
-        style={{ opacity: hover === null ? 0 : 1, scale: hover === null ? "0.6" : "1", transitionTimingFunction: "var(--expo)" }}
-      >
-        {CATEGORIES.map((c, i) => (
-          <Image
-            key={c.id}
-            src={COVERS[c.id]}
-            alt=""
-            fill
-            sizes="260px"
-            className="object-cover transition-[opacity,transform] duration-700"
-            style={{ opacity: hover === i ? 1 : 0, transform: hover === i ? "scale(1)" : "scale(1.2)" }}
-          />
-        ))}
+        {/* desktop: fixed preview panel — never covers the list */}
+        <div className="hidden md:col-span-4 md:block">
+          <div className="sticky top-28">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[12px] bg-paper-2">
+              {CATEGORIES.map((c, i) => {
+                const on = (hover ?? 0) === i;
+                return (
+                  <div
+                    key={c.id}
+                    className="absolute inset-0 transition-[clip-path] duration-[900ms]"
+                    style={{ clipPath: on ? "inset(0 0 0 0)" : "inset(100% 0 0 0)", zIndex: on ? 2 : 1, transitionTimingFunction: "var(--expo)" }}
+                  >
+                    <Image
+                      src={COVERS[c.id]}
+                      alt={c.name[locale]}
+                      fill
+                      sizes="33vw"
+                      className="object-cover transition-transform duration-[1.4s]"
+                      style={{ transform: on ? "scale(1)" : "scale(1.15)", transitionTimingFunction: "var(--expo)" }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-5 min-h-[72px]">
+              <p key={hover ?? 0} className="text-[15px] leading-snug text-ink-2" style={{ animation: "rise .7s var(--expo) both" }}>
+                {CATEGORIES[hover ?? 0].lead[locale]}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

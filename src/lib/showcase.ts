@@ -21,7 +21,7 @@ export function speciesShowcase(locale: Locale): ShowcaseEntry[] {
       return {
         key: id,
         name: s.name,
-        tag: s.range[locale],
+        tag: cats.map((c) => c.short[locale]).join(" · "),
         title: `${s.name} · ${s.latin}`,
         meta: [
           { k: t.nav.products, v: cats.map((c) => c.short[locale]).join(" · ") },

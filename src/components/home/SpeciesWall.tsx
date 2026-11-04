@@ -41,7 +41,7 @@ function Tile({ id, locale, i }: { id: keyof typeof SPECIES; locale: Locale; i: 
       <span className="absolute inset-x-4 bottom-4 text-bone">
         <span className="block text-[clamp(18px,1.7vw,26px)] font-medium tracking-[-0.03em]">{s.name}</span>
         <span className="mt-1 block font-mono text-[10px] uppercase tracking-[0.12em] text-bone-2">
-          <i className="not-italic">{s.latin}</i> · {s.range[locale]}
+          <i className="not-italic">{s.latin}</i>
         </span>
       </span>
     </Link>
