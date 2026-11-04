@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import type { Locale } from "@/data/catalog";
-import { CATEGORIES, COVERS } from "@/data/catalog";
+import { CATEGORIES, LINE_SHOTS } from "@/data/catalog";
 import { getDict } from "@/i18n/dict";
 import Lines from "../Lines";
 
@@ -59,8 +59,8 @@ export default function CollectionIndex({ locale }: { locale: Locale }) {
                       </span>
                     </span>
                   </span>
-                  <span className="relative mb-7 block aspect-[16/9] overflow-hidden rounded-lg md:hidden">
-                    <Image src={COVERS[c.id]} alt="" fill sizes="100vw" className="object-cover" />
+                  <span className="relative mb-7 block aspect-[16/9] overflow-hidden rounded-lg bg-[#f1efea] md:hidden">
+                    <Image src={LINE_SHOTS[c.id]} alt="" fill sizes="100vw" className="object-cover" />
                   </span>
                 </Link>
               </li>
@@ -71,7 +71,7 @@ export default function CollectionIndex({ locale }: { locale: Locale }) {
         {/* desktop: fixed preview panel — never covers the list */}
         <div className="hidden md:col-span-4 md:block">
           <div className="sticky top-28">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[12px] bg-paper-2">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[12px] bg-[#f1efea]">
               {CATEGORIES.map((c, i) => {
                 const on = (hover ?? 0) === i;
                 return (
@@ -81,11 +81,11 @@ export default function CollectionIndex({ locale }: { locale: Locale }) {
                     style={{ clipPath: on ? "inset(0 0 0 0)" : "inset(100% 0 0 0)", zIndex: on ? 2 : 1, transitionTimingFunction: "var(--expo)" }}
                   >
                     <Image
-                      src={COVERS[c.id]}
+                      src={LINE_SHOTS[c.id]}
                       alt={c.name[locale]}
                       fill
                       sizes="33vw"
-                      className="object-cover transition-transform duration-[1.4s]"
+                      className="object-contain transition-transform duration-[1.4s]"
                       style={{ transform: on ? "scale(1)" : "scale(1.15)", transitionTimingFunction: "var(--expo)" }}
                     />
                   </div>

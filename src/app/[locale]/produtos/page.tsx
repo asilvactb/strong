@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import type { Locale } from "@/data/catalog";
-import { CATEGORIES, COVERS } from "@/data/catalog";
+import { CATEGORIES, LINE_SHOTS } from "@/data/catalog";
 import { getDict } from "@/i18n/dict";
 import Lines from "@/components/Lines";
 
@@ -11,11 +11,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   return { title: getDict(locale).nav.products };
 }
 
+const EDGE =
+  "linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent)";
+
 export default async function Products({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const t = getDict(locale);
   return (
-    <section className="gut bg-paper pb-[18vh] pt-[22vh]" data-theme="light">
+    <section className="gut bg-[#f1efea] pb-[18vh] pt-[22vh]" data-theme="light">
       <div className="mb-16 grid gap-8 md:grid-cols-12 md:items-end">
         <div className="md:col-span-8">
           <p className="lbl mb-6 rv">{t.nav.products}</p>
@@ -23,32 +26,50 @@ export default async function Products({ params }: { params: Promise<{ locale: L
         </div>
         <p className="rv text-ink-2 md:col-span-4">{t.contactBlock.body}</p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {CATEGORIES.map((c, i) => (
-          <Link
-            key={c.id}
-            href={`/${locale}/produtos/${c.id}`}
-            className={`group rv relative block overflow-hidden rounded-[12px] bg-dark text-bone ${i === 0 ? "lg:col-span-2 lg:row-span-2" : ""}`}
-            style={{ ["--d" as string]: `${(i % 3) * 80}ms` }}
-            data-cursor
-          >
-            <div className={`relative ${i === 0 ? "aspect-[4/5] lg:aspect-auto lg:h-full lg:min-h-[640px]" : "aspect-[4/5]"}`}>
-              <Image src={COVERS[c.id]} alt={c.name[locale]} fill sizes="(min-width:1024px) 33vw, 100vw" className="object-cover transition-transform duration-[1.4s] group-hover:scale-[1.06]" style={{ transitionTimingFunction: "var(--expo)" }} />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,11,9,.1),rgba(12,11,9,.15)_50%,rgba(12,11,9,.85))]" />
-              <span className="lbl absolute left-5 top-5 text-bone/80">{c.index}</span>
-              <span className="lbl absolute right-5 top-5 text-bone/80">
-                {c.variants.length} {t.collection.variants}
-              </span>
-              <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-4">
-                <div>
-                  <h2 className={`${i === 0 ? "text-[clamp(36px,4.6vw,72px)]" : "text-[clamp(28px,2.6vw,40px)]"} font-medium leading-none tracking-[-0.045em]`}>{c.name[locale]}</h2>
-                  <p className="mt-3 max-w-[40ch] text-sm text-bone-2 opacity-0 transition-opacity duration-500 group-hover:opacity-100">{c.lead[locale]}</p>
-                </div>
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bone text-dark transition-transform duration-500 group-hover:-rotate-45">→</span>
+
+      <div className="grid border-t border-[var(--line)] md:grid-cols-2 lg:grid-cols-3">
+        {CATEGORIES.map((c, i) => {
+          const species = new Set(c.variants.map((v) => v.species)).size;
+          return (
+            <Link
+              key={c.id}
+              href={`/${locale}/produtos/${c.id}`}
+              className="group rv relative flex flex-col border-b border-[var(--line)] py-8 md:px-6 md:[&:nth-child(2n)]:border-l lg:[&:nth-child(2n)]:border-l-0 lg:[&:not(:nth-child(3n+1))]:border-l"
+              style={{ ["--d" as string]: `${(i % 3) * 80}ms` }}
+              data-cursor
+            >
+              <div className="flex items-start justify-between">
+                <span className="lbl">{c.index}</span>
+                <span className="lbl text-right">
+                  {c.build === "underlay" ? t.product.underlay : `${species} ${t.collection.species}`}
+                  <br />
+                  {c.variants.length} {t.collection.variants}
+                </span>
               </div>
-            </div>
-          </Link>
-        ))}
+
+              <div className="relative my-6 aspect-[16/10]" style={{ maskImage: EDGE, WebkitMaskImage: EDGE, maskComposite: "intersect", WebkitMaskComposite: "source-in" }}>
+                <Image
+                  src={LINE_SHOTS[c.id]}
+                  alt={c.name[locale]}
+                  fill
+                  sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-[1.2s] group-hover:-translate-y-3 group-hover:-rotate-2 group-hover:scale-[1.04]"
+                  style={{ transitionTimingFunction: "var(--expo)" }}
+                />
+              </div>
+
+              <div className="mt-auto flex items-end justify-between gap-4">
+                <div>
+                  <h2 className="text-[clamp(26px,2.4vw,38px)] font-medium leading-none tracking-[-0.045em]">{c.name[locale]}</h2>
+                  <p className="mt-3 max-w-[40ch] text-sm leading-snug text-ink-2">{c.lead[locale]}</p>
+                </div>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[var(--line)] transition-all duration-500 group-hover:-rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-paper">
+                  →
+                </span>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

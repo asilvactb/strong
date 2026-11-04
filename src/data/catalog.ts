@@ -458,3 +458,13 @@ export const COVERS: Record<string, string> = {
   rodape: "/textures/carvalho.jpg",
   acessorios: "/img/gallery/hugo_carvalho_1.jpg",
 };
+
+/** Studio shot that represents each product line. */
+export const LINE_SHOTS: Record<CategoryId, string> = {
+  "pavimento-multicamadas": "/img/shots/pavimento-multicamadas/carvalho-topline.jpg",
+  "pavimento-macico": "/img/shots/pavimento-macico/nogueira-topline.jpg",
+  deck: "/img/shots/deck/cumaru.jpg",
+  triplex: "/img/shots/triplex/afizelia-topline.jpg",
+  rodape: "/img/shots/rodape/macico-cru-carvalho.jpg",
+  acessorios: "/img/shots/acessorios/bases.jpg",
+};
